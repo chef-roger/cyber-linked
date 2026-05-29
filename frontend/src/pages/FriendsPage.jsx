@@ -80,16 +80,14 @@ export default function FriendsPage() {
   }
 
   const handleSend = (e) => {
-    e.preventDefault()
-    if (!input.trim() || !chatId) return
-    const content = input.trim()
-    setInput('')
-    isTyping.current = false
-    stopTyping(chatId)
-    sendMessage(chatId, content, (msg) => {
-      setMessages(prev => [...prev, msg])
-    })
-  }
+  e.preventDefault()
+  if (!input.trim() || !chatId) return
+  const content = input.trim()
+  setInput('')
+  isTyping.current = false
+  stopTyping(chatId)
+  sendMessage(chatId, content, () => {})
+}
 
   const formatTime = (date) => {
     return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
