@@ -1,0 +1,205 @@
+.search-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px;
+  gap: 24px;
+}
+
+.search-header { display: flex; flex-direction: column; gap: 8px; }
+
+.search-title {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 4px;
+}
+
+.search-bracket { color: var(--magenta); opacity: 0.7; }
+
+.search-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.search-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  transition: all 0.2s;
+}
+
+.search-bar-wrap:focus-within {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.search-icon { color: var(--cyan); display: flex; }
+.search-icon svg { width: 18px; height: 18px; }
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  letter-spacing: 1px;
+}
+.search-input::placeholder { color: var(--text-dim); }
+
+.search-spinner {
+  width: 16px; height: 16px;
+  border: 1px solid var(--border);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.search-results {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-empty, .search-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.empty-icon { font-size: 40px; color: var(--text-dim); opacity: 0.4; }
+
+.prompt-art {
+  font-size: 16px;
+  color: var(--cyan);
+  opacity: 0.5;
+  animation: cursor-blink 1s infinite;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.prompt-hint { font-size: 10px; }
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  transition: all 0.2s;
+}
+
+.user-card:hover {
+  border-color: var(--border-hot);
+  background: rgba(0,255,240,0.06);
+}
+
+.user-card-avatar {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, rgba(0,255,240,0.2), rgba(255,0,255,0.2));
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--cyan);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: -2px; right: -2px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--bg2);
+}
+.status-indicator.online { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+.status-indicator.offline { background: var(--text-dim); }
+
+.user-card-info { flex: 1; }
+
+.user-card-name {
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+.user-card-email {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.user-card-bio {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.user-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.user-status-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.user-status-badge.online { color: #00ff88; }
+.user-status-badge.offline { color: var(--text-dim); }
+
+.connect-btn {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.connect-btn:hover:not(:disabled) {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: var(--glow-cyan);
+}
+
+.connect-btn.sent {
+  border-color: var(--text-dim);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}

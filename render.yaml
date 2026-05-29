@@ -1,0 +1,22 @@
+# Render Blueprint — defines your backend service
+# Render reads this file automatically from your repo root
+
+services:
+  - type: web
+    name: cyberlink-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false          # set manually in Render dashboard (MongoDB Atlas URI)
+      - key: JWT_SECRET
+        sync: false          # set manually in Render dashboard
+      - key: CLIENT_URL
+        sync: false          # your Vercel frontend URL

@@ -1,0 +1,77 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── TEST ───────────────────────────────────────────────────────────────────
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate backend syntax
+        working-directory: backend
+        run: |
+          npm ci
+          node --check src/index.js
+          node --check src/routes/auth.js
+          node --check src/routes/users.js
+          node --check src/routes/chat.js
+          node --check src/middleware/auth.js
+          node --check src/socket/index.js
+
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+  # ─── DEPLOY BACKEND (Render) ─────────────────────────────────────────────────
+  deploy-backend:
+    name: Deploy Backend → Render
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Trigger Render deploy hook
+        run: |
+          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
+            -o /dev/null -w "HTTP %{http_code}\n"
+          echo "✅ Render deploy triggered"
+
+  # ─── DEPLOY FRONTEND (Vercel) ────────────────────────────────────────────────
+  deploy-frontend:
+    name: Deploy Frontend → Vercel
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Deploy to Vercel
+        working-directory: frontend
+        run: |
+          vercel pull --yes --environment=production \
+            --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod \
+            --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod \
+            --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
