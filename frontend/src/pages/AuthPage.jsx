@@ -38,7 +38,7 @@ export default function AuthPage() {
       <div className="auth-container animate-in">
         <div className="auth-logo">
           <div className="logo-glitch" data-text="CYBERLINK">CYBEINK</div>
-          <div className="logo-sub">NEURAL CHAT NETWORK v2.0.77</div>
+          <div className="logo-sub">NEURAL CH NETWORK v2.0.77</div>
         </div>
 
         <div className="auth-panel hud-corner">
