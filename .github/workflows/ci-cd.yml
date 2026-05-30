@@ -19,10 +19,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Validate backend syntax
+      - name: Validate backend
         working-directory: backend
         run: |
-          npm ci
+          npm install
           node --check src/index.js
           node --check src/routes/auth.js
           node --check src/routes/users.js
@@ -47,8 +47,12 @@ jobs:
     steps:
       - name: Trigger Render deploy hook
         run: |
-          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
-            -o /dev/null -w "HTTP %{http_code}\n"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}")
+          echo "HTTP Status: $STATUS"
+          if [ "$STATUS" != "200" ] && [ "$STATUS" != "201" ]; then
+            echo "❌ Deploy hook failed with status $STATUS"
+            exit 1
+          fi
           echo "✅ Render deploy triggered"
 
   # ─── DEPLOY FRONTEND (Vercel) ────────────────────────────────────────────────
