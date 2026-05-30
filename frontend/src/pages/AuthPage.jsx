@@ -44,7 +44,7 @@ export default function AuthPage() {
         <div className="auth-panel hud-corner">
           <div className="auth-tabs">
             <button className={`tab ${mode === 'login' ? 'active' : ''}`} onClick={() => setMode('login')}>
-              JACK IN
+              JACKED IN
             </button>
             <button className={`tab ${mode === 'register' ? 'active' : ''}`} onClick={() => setMode('register')}>
               NEW IDENTITY
